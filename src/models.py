@@ -46,10 +46,8 @@ class Planets(Base):
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    planets_id = Column(Integer, ForeignKey('planets.id'),
-        nullable=False)    
-    starships_id = Column(Integer, ForeignKey('starships.id'),
-        nullable=False)
+    starships = relationship('Starships', backref='user', lazy=True)
+    character = relationship('Character', backref='user', lazy=True)
     favourite_id = Column(Integer, ForeignKey('favourite.id'),
         nullable=True)
 
@@ -75,7 +73,10 @@ class Starships(Base):
     pilots = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    planet = relationship("Planets", backref="character", uselist=False)
+    planet_id = Column(Integer, ForeignKey('planets.id'),
+        nullable=True)
+    character_id = Column(Integer, ForeignKey('character.id'),
+        nullable=True)
     favourite_id = Column(Integer, ForeignKey('favourite.id'),
         nullable=True)
     
@@ -92,11 +93,12 @@ class Character(Base):
     height = Column(String(250), nullable=False)
     mass = Column(String(250), nullable=False)
     skin_color = Column(String(250), nullable=False)
-    planet = relationship("Planets", backref="character", lazy=True)
+    planet =  Column(String(250), nullable=False)
+    planet_id = Column(Integer, ForeignKey('planets.id'),
+        nullable=True)
     films = Column(String(250), nullable=False)
     species = Column(String(250), nullable=False)
     starships = relationship("Starships", backref="character", uselist=False)
-    starship_id = Column(Integer, ForeignKey("starships.id"), nullable=False)
     vehicles = Column(String(250), nullable=False)
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
