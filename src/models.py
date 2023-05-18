@@ -14,7 +14,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     user_name = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
-    favourite = relationship('Favourite', backref='user', lazy=True)
+    favourite = relationship('Favourite', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Favourite
 
 class Favourite(Base):
     __tablename__ = 'favourite'
@@ -22,10 +22,10 @@ class Favourite(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'),
-        nullable=False)
-    starships = relationship('Starships', backref='user', lazy=True)
-    planets = relationship('Planets', backref='user', lazy=True)
-    character = relationship('Character', backref='user', lazy=True)
+        nullable=False) # Define la columna user_id como clave foránea relacionada con la tabla 'user'
+    starships = relationship('Starships', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Starships
+    planets = relationship('Planets', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Planets
+    character = relationship('Character', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Character
 
 class Planets(Base):
     __tablename__ = 'planets'
@@ -46,8 +46,8 @@ class Planets(Base):
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    starships = relationship('Starships', backref='user', lazy=True)
-    character = relationship('Character', backref='user', lazy=True)
+    starships = relationship('Starships', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Starships
+    character = relationship('Character', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Character
     favourite_id = Column(Integer, ForeignKey('favourite.id'),
         nullable=True)
 
@@ -98,7 +98,7 @@ class Character(Base):
         nullable=True)
     films = Column(String(250), nullable=False)
     species = Column(String(250), nullable=False)
-    starships = relationship("Starships", backref="character", uselist=False)
+    starships = relationship("Starships", backref="character", uselist=False) # Establece una relación uno a muchos con la clase Starships
     vehicles = Column(String(250), nullable=False)
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
