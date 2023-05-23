@@ -14,21 +14,36 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     user_name = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
-    favourite = relationship('Favourite', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Favourite
-
-class Favourite(Base):
-    __tablename__ = 'favourite'
+    favourite_starship = relationship('Favourite_starship', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Favourite
+    favourite_planet = relationship('Favourite_planet', backref='user', lazy=True)
+    favourite_character = relationship('Favourite_character', backref='user', lazy=True)
+    
+class Favourite_character(Base):
+    __tablename__ = 'favourite_character'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'),
-        nullable=False) # Define la columna user_id como clave foránea relacionada con la tabla 'user'
-    starships = relationship('Starships', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Starships
-    planets = relationship('Planets', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Planets
-    character = relationship('Character', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Character
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False) # Define la columna user_id como clave foránea relacionada con la tabla 'user'
+    character_id = Column(Integer, ForeignKey('character.id'), nullable=False)
 
-class Planets(Base):
-    __tablename__ = 'planets'
+class Favourite_planet(Base):
+    __tablename__ = 'favourite_planet'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False) # Define la columna user_id como clave foránea relacionada con la tabla 'user'
+    planet_id = Column(Integer, ForeignKey('planet.id'), nullable=False)
+
+class Favourite_starship(Base):
+    __tablename__ = 'favourite_starship'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False) # Define la columna user_id como clave foránea relacionada con la tabla 'user'
+    starship_id = Column(Integer, ForeignKey('starship.id'), nullable=False)
+
+class Planet(Base):
+    __tablename__ = 'planet'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
@@ -46,13 +61,10 @@ class Planets(Base):
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    starships = relationship('Starships', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Starships
-    character = relationship('Character', backref='user', lazy=True) # Establece una relación uno a muchos con la clase Character
-    favourite_id = Column(Integer, ForeignKey('favourite.id'),
-        nullable=True)
+    favourite_planet = relationship('Favourite_planet', backref='planet', lazy='True')
 
-class Starships(Base):
-    __tablename__ = 'starships'
+class Starship(Base):
+    __tablename__ = 'starship'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
@@ -73,12 +85,8 @@ class Starships(Base):
     pilots = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    planet_id = Column(Integer, ForeignKey('planets.id'),
-        nullable=True)
-    character_id = Column(Integer, ForeignKey('character.id'),
-        nullable=True)
-    favourite_id = Column(Integer, ForeignKey('favourite.id'),
-        nullable=True)
+    favourite_starship = relationship('Favourite_starship', backref='starship', lazy='True')
+
     
 class Character(Base):
     __tablename__ = 'character'
@@ -93,18 +101,14 @@ class Character(Base):
     height = Column(String(250), nullable=False)
     mass = Column(String(250), nullable=False)
     skin_color = Column(String(250), nullable=False)
-    planet =  Column(String(250), nullable=False)
-    planet_id = Column(Integer, ForeignKey('planets.id'),
-        nullable=True)
     films = Column(String(250), nullable=False)
     species = Column(String(250), nullable=False)
-    starships = relationship("Starships", backref="character", uselist=False) # Establece una relación uno a muchos con la clase Starships
     vehicles = Column(String(250), nullable=False)
     url = Column(String(250), nullable=False)
     created = Column(String(250), nullable=False)
     edited = Column(String(250), nullable=False)
-    favourite_id = Column(Integer, ForeignKey('favourite.id'),
-        nullable=True)
+    favourite_character = relationship('Favourite_character', backref='character', lazy='True')
+
 
     def to_dict(self):
         return {}
